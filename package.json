@@ -1,0 +1,20 @@
+{
+    "name": "manual-mcp",
+    "version": "0.0.1",
+    "type": "module",
+    "main": "dist/server.js",
+    "scripts": {
+        "build": "tsc -p .",
+        "start": "node dist/server.js",
+        "dev": "tsx src/server.ts"
+    },
+    "dependencies": {
+        "fast-glob": "^3.3.2",
+        "gray-matter": "^4.0.3"
+    },
+    "devDependencies": {
+        "ts-node": "^10.9.2",
+        "tsx": "^4.7.0",
+        "typescript": "^5.5.4"
+    }
+}
