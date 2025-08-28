@@ -1,20 +1,43 @@
 {
     "name": "manual-mcp",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "type": "module",
-    "main": "dist/server.js",
+
+    "main": "dist/server_http.js",
+    "exports": {
+        ".": "./dist/server_http.js",
+        "./http": "./dist/server_http.js",
+        "./stdio": "./dist/server.js"
+    },
+    "bin": {
+        "manual-mcp": "dist/server_http.js"
+    },
     "scripts": {
         "build": "tsc -p .",
-        "start": "node dist/server.js",
-        "dev": "tsx src/server.ts"
+
+        "start": "node dist/server_http.js",
+        "dev": "tsx src/server_http.ts",
+
+        "start:stdio": "node dist/server.js",
+        "dev:stdio": "tsx src/server.ts",
+
+        "check": "tsc -p . --noEmit"
     },
     "dependencies": {
+        "@modelcontextprotocol/sdk": "^1.0.0",
+        "express": "^4.19.0",
         "fast-glob": "^3.3.2",
         "gray-matter": "^4.0.3"
     },
     "devDependencies": {
+        "@types/express": "^4.17.21",
+        "@types/node": "^22.0.0",
         "ts-node": "^10.9.2",
         "tsx": "^4.7.0",
         "typescript": "^5.5.4"
+    },
+
+    "engines": {
+        "node": ">=18"
     }
 }
