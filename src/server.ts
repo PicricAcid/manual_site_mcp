@@ -15,7 +15,7 @@ const server = new McpServer({
 server.tool(
     "listArticles",
     {
-        "description": "List articles (title, path, tags, data, lastmod).",
+        "description": "List articles (title, tags, data, lastmod).",
         inputSchema: { type: "object", properties: {} }
     },
     async () => {
@@ -26,18 +26,18 @@ server.tool(
 server.tool(
     "getArticle",
     {
-        "description": "Get an article by path.",
+        "description": "Get an article by title.",
         inputSchema: {
             type: "object",
             additionalPorperties: false,
-            required: ["path"],
-            properties: { path: { type: "string" } }
+            required: ["title"],
+            properties: { title: { type: "string" } }
         }
     },
     async (args) => {
         await ensureLoaded();
-        const p = String(args?.path || "");
-        if (!p) return { content: [{ type: "text", text: "Path required" }] };
+        const p = String(args?.title || "");
+        if (!p) return { content: [{ type: "text", text: "title required" }] };
         return { content: [{ type: "text", text: getArticleText(p) }] };
     }
 );

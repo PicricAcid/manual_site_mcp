@@ -22,7 +22,7 @@ async function makeServer() {
     server.tool(
         "listArticles",
         {
-            "description": "List articles (title, path, tags, data, lastmod).",
+            "description": "List articles (title, tags, data, lastmod).",
             inputSchema: { type: "object", properties: {} }
         },
         async () => {
@@ -34,19 +34,20 @@ async function makeServer() {
     server.tool(
         "getArticle",
         {
-            "description": "Get an article by path.",
+            "description": "Get an article by title.",
             inputSchema: {
                 type: "object",
                 additionalPorperties: false,
-                required: ["path"],
-                properties: { path: { type: "string" } }
+                required: ["title"],
+                properties: { title: { type: "string" } }
             }
         },
         async (args) => {
             await ensureLoaded();
-            const p = String(args?.path || "");
-            if (!p) return { content: [{ type: "text", text: "Path required" }] };
-            return { content: [{ type: "text", text: getArticleText(p) }] };
+            console.log("title", args?.title);
+            const title = String(args?.title || "");
+            if (!title) return { content: [{ type: "text", text: "title required" }] };
+            return { content: [{ type: "text", text: getArticleText(title) }] };
         }
     );
 

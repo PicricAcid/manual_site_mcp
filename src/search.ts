@@ -17,7 +17,6 @@ export function searchArticles(
         return hits.some(Boolean);
     }).map(a => ({
         title: a.meta.title,
-        path: a.meta.path,
         tags: a.meta.tags ?? [],
         lastmod: a.meta.lastmod,
         snippet: makeSnippet(a.body, needle)

@@ -20,16 +20,16 @@ type ToolDef = {
 const TOOL_DEFS: ToolDef[] = [
     {
         name: "listArticles",
-        description: "List articles (title, path, tags, date, lastmod).",
+        description: "List articles (title, tags, date, lastmod).",
         input_schema: { type: "object", additionalProperties: false, properties: {} }
     },
     {
         name: "getArticle",
-        description: "Get an article by path.",
+        description: "Get an article by title.",
         input_schema: {
             type: "object",
             additionalProperties: false,
-            properties: { path: { type: "string" } }
+            properties: { title: { type: "string" } }
         }
     },
     {
@@ -93,23 +93,21 @@ export async function ensureLoaded() {
 export function listArticlesText(): string {
     const rows = cache.map(a => ({
         title: a.meta.title,
-        path: a.meta.path,
         tags: a.meta.tags ?? [],
         date: a.meta.date,
         lastmod: a.meta.lastmod
     }));
 
     return rows.length
-        ? rows.map(r => `${r.title} (${r.path}) [${(r.tags || []).join(", ")}] ${r.date ?? r.lastmod ?? ""}`).join("\n")
+        ? rows.map(r => `${r.title} [${(r.tags || []).join(", ")}] ${r.date ?? r.lastmod ?? ""}`).join("\n")
         : "(no articles)";
 }
 
-export function getArticleText(path: string): string {
-    const hit = cache.find(a => a.meta.path === path);
-    if (!hit) return `(not found) ${path}`;
+export function getArticleText(title: string): string {
+    const hit = cache.find(a => a.meta.title === title);
+    if (!hit) return `(not found) ${title}`;
     return [
         `# ${hit.meta.title}`,
-        `path: ${hit.meta.path}`,
         `tags: ${(hit.meta.tags || []).join(", ")}`,
         `date: ${hit.meta.date ?? ""}`,
         `lastmod: ${hit.meta.lastmod ?? ""}`,
@@ -122,7 +120,7 @@ export function searchArticlesText(q: string, fields?: Fields): string {
     const res = q ? searchArticles(cache, q, fields) : [];
     if (!res || res.length === 0) return "(no results)";
     return res.map((r: any) =>
-        `- ${r.meta?.title ?? r.title} (${r.meta?.path ?? r.path}) [${(r.meta?.tags || r.tags || []).join(", ")}]`
+        `- ${r.meta?.title ?? r.title} [${(r.meta?.tags || r.tags || []).join(", ")}]`
     ).join("\n");
 }
 
@@ -166,7 +164,6 @@ async function handle(req: JsonRpcReq): Promise<JsonRpcRes> {
                     case "listArticles":
                         const rows = cache.map(a => ({
                             title: a.meta.title,
-                            path: a.meta.path,
                             tags: a.meta.tags ?? [],
                             date: a.meta.date,
                             lastmod: a.meta.lastmod
@@ -174,9 +171,9 @@ async function handle(req: JsonRpcReq): Promise<JsonRpcRes> {
 
                         return ok(id, { content: [{ type: "text", text: rows }]});
                     case "getArticle": {
-                        const p = args.path as string;
-                        if (!p) return err(id, -32602, "path required");
-                        const hit = cache.find(a => a.meta.path === p);
+                        const title = args.title as string;
+                        if (!title) return err(id, -32602, "title required");
+                        const hit = cache.find(a => a.meta.title === title);
                         if (!hit) return err(id, -32000, "not found");
                         return ok(id, { content: [{ type: "text", text: { meta:hit.meta, body: hit.body } }] });
                     }

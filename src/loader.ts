@@ -9,7 +9,6 @@ export type ArticleMeta = {
     date?: string;
     lastmod?: string;
     tags?: string[];
-    path: string;
     url?: string;
 };
 
@@ -41,8 +40,7 @@ export async function loadAllArticles(): Promise<Article[]> {
                 author: fm.author,
                 date: fm.date,
                 lastmod: fm.lastmod,
-                tags: Array.isArray(fm.tags) ? fm.tags : undefined,
-                path: path.join(CONTENT_DIR, rel).replaceAll("\\", "/")
+                tags: Array.isArray(fm.tags) ? fm.tags : undefined
             },
             body: parsed.content ?? ""
         });

@@ -1,6 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import express from "express";
+import { z } from "zod";
 
 import {
     init, ensureLoaded,
@@ -39,7 +40,7 @@ app.all("/mcp", async (req, res) => {
     try {
         server.tool(
             "listArticles",
-            "List articles (title, path, tags, data, lastmod).",
+            "List articles (title, tags, data, lastmod).",
             { type: "object", properties: {} },
             async () => {
                 await ensureLoaded();
@@ -48,36 +49,21 @@ app.all("/mcp", async (req, res) => {
         );
         server.tool(
             "getArticle",
-            "Get an article by path.",
-            {
-                type: "object",
-                additionalPorperties: false,
-                required: ["path"],
-                properties: { path: { type: "string" } }
-            },
-            async (args) => {
+            "Get an article by title.",
+            { title: z.string() },
+            async ({title}) => {
                 await ensureLoaded();
-                const p = String(args?.path || "");
-                if (!p) return { content: [{ type: "text", text: "Path required" }] };
-                return { content: [{ type: "text", text: getArticleText(p) }] };
+                console.log("title", title);
+                if (!title) return { content: [{ type: "text", text: "Title required" }] };
+                return { content: [{ type: "text", text: getArticleText(title) }] };
             }
         );
         server.tool(
             "searchArticles",
             "Search articles by query string (title, tags, content).",
-            {
-                type: "object",
-                additionalProperties: false,
-                required: ["q"],
-                properties: {
-                    q: { type: "string" },
-                    fields: { type: "array", items: { type: "string", enum: ["title", "tags", "content"] } }
-                }
-            },
-            async (args) => {
+            { q: z.string(), fields: z.array(z.enum(["title", "tags", "content"])).optional() },                
+            async ({q, fields}) => {
                 await ensureLoaded();
-                const q = String(args?.q || "").trim();
-                const fields = (args?.fields as Fields | undefined);
                 return { content: [{ type: "text", text: searchArticlesText(q, fields) }] };
             }
         );
