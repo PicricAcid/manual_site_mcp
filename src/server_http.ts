@@ -41,7 +41,6 @@ app.all("/mcp", async (req, res) => {
         server.tool(
             "listArticles",
             "List articles (title, tags, data, lastmod).",
-            { type: "object", properties: {} },
             async () => {
                 await ensureLoaded();
                 return { content: [{ type: "text", text: listArticlesText() }] };
@@ -70,10 +69,6 @@ app.all("/mcp", async (req, res) => {
         server.tool(
             "reload",
             "Reload all articles from the source.",
-            {
-                type: "object",
-                properties: {}
-            },
             async () => {
                 const msg = await reloadText();
                 return { content: [{ type: "text", text: msg }] };
