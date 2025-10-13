@@ -7,7 +7,7 @@ import {
     init, ensureLoaded,
     listArticlesText, getArticleText,
     searchArticlesText, reloadText, Fields
-} from "./server_old.js";
+} from "./server_jsonrpc.js";
 
 init();
 const app = express();
