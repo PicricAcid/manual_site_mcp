@@ -5,7 +5,7 @@ import {
     init, ensureLoaded,
     listArticlesText, getArticleText,
     searchArticlesText, reloadText, Fields
-} from "./server_old.js";
+} from "./server_jsonrpc.js";
 
 const server = new McpServer({
     name: "Manual MCP",
