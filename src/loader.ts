@@ -17,8 +17,8 @@ export type Article = {
     body: string;
 };
 
-const ROOT = "/Users/picric_acid/workstation/pages_test";
-const CONTENT_DIR = "docs/contents";
+const ROOT = "YOUR_MANUAL_DIRECTORY";
+const CONTENT_DIR = "docs/content";
 
 export async function loadAllArticles(): Promise<Article[]> {
     console.error("[loader] ROOT=", ROOT);
