@@ -22,7 +22,7 @@ Markdown 記事を読み込み、検索・参照するための Model Context Pr
 ## データ読み込み
 - 実装: `src/loader.ts`
 - 使用ライブラリ: `fast-glob`, `gray-matter`
-- ルート: `ROOT="/Users/picric_acid/workstation/pages_test"`（絶対パスでハードコード）
+- ルート: `ROOT="YOUR_MANUAL_DIRECTORY"`に指定
 - コンテンツディレクトリ: `CONTENT_DIR="docs/contents"`
 - frontmatter（例）: `title`, `author`, `date`, `lastmod`, `tags`（配列）。
 - `meta.path` は `docs/contents/...` 形式に正規化（区切りは `/`）。
@@ -37,7 +37,6 @@ Markdown 記事を読み込み、検索・参照するための Model Context Pr
 - 共通: `@modelcontextprotocol/sdk` の `McpServer` を使用。
 - HTTP 版: `StreamableHTTPServerTransport`（`src/server_http.ts`）。`/mcp` に JSON-RPC over HTTP を受け付け、`server_old.ts` の関数群を呼び出す。
 - stdio 版: `StdioServerTransport`（`src/server.ts`）。
-- 旧 HTTP 実装（セッション管理あり）は `src/server_http_old.ts` に残置。
 - 実処理関数は `src/server_old.ts` に定義（`init/ensureLoaded/listArticlesText/getArticleText/searchArticlesText/reloadText`）。
 
 ## 留意点
