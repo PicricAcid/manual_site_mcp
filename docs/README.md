@@ -1,7 +1,8 @@
 # manual-mcp 概要
 
 ## 目的
-Markdown 記事を読み込み、検索・参照するための Model Context Protocol (MCP) サーバーです。HTTP と stdio の 2 形態で提供され、ツールとして list/get/search/reload を公開します。
+[GitHub Pagesによるマニュアルサイト](https://github.com/PicricAcid/document-site-sample)からMarkdown 記事を読み込み、検索・参照するためのMCPサーバーです。
+HTTP と stdio の 2 形態で提供され、ツールとして list/get/search/reload を公開します。
 
 ## エントリと実行方法
 - HTTP 版: `src/server_http.ts`（ビルド後は `dist/server_http.js`）。エンドポイント: `/health`, `/mcp`。
@@ -40,5 +41,4 @@ Markdown 記事を読み込み、検索・参照するための Model Context Pr
 - 実処理関数は `src/server_old.ts` に定義（`init/ensureLoaded/listArticlesText/getArticleText/searchArticlesText/reloadText`）。
 
 ## 留意点
-- 記事ルートが絶対パスで固定されており、他環境では動作しません。環境変数や設定ファイルでの切替にすると移植性が向上します。
-- 返却は主にテキスト形式で、MCP クライアントからの利用を想定しています。
+- 記事はローカルリポジトリから取得します。あらかじめマニュアルサイトをcloneする必要があります。
